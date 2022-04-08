@@ -11,7 +11,7 @@
 * We would like for all the neurons to be used. 
 * However, naturally all neurons wont be used for a specific input pattern. There shoulsd still be no free loading neurons.
 * We can ecnode the the base rate as the weight of the linear combination of the gaussians and have this weight be modified through time when a specific neuron hasent been stimulated in some time. However this thresholds should be robust in the sense that it should be patient in that it shouldnt het kicked if its falling sasleep just becasue there has been a couple inputs that dont stimulate it. 
-* There was mention of experiemntal evidence of this happening, where the neuron was kicked after some time, then it wakes uop and kinda finds its a stimulus to respond to. 
+* There was mention of experiemntal evidence of this happening, where the neuron was kicked after some time, then it wakes up and kinda finds a stimulus to respond to. 
 * there was also mention of experimental evidence that different neurons have different baseline activitis that follow a log normal distribution (one could pontetnially also model this as a gamma distribution). we could initialize the wieghts of the gaussina mixture by drawing values from thsi gaussian an then nomralizing in order to get the baeline acitivites. 
 
 ### Additional notes
