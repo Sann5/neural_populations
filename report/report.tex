@@ -1,0 +1,763 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{draculatheme}
+\usepackage{biblatex}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{IEEEtrantools}
+\usepackage{parskip}
+\addbibresource{mybib.bib}
+
+% For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+    
+
+\title{\color{draculapink}\line(1,0){300}\\Modeling Neural Populations with Mixture Models\\\line(1,0){300}}
+\author{\color{draculapurple}Santiago M. Castro Dau}
+\date{\color{draculapurple}July 2022}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The central motivation for this work is to provide an alternative perspective on the
+online K-means algorithm which is known to be analogous to a Winner takes it all
+network. Furthermore we seek to improve said algorithm such that it becomes immune to the uneven
+membership assignment problem, where occasionally and depending on
+initialization one centroid is assigned responsibility over multiple
+clusters of data points while others are left without any. 
+
+We start by introducing Winner takes it all networks and their connection to the K-means algorithm. Then we introduce Mixture Models and show that the K-means algorithm can be seen as an instance of parameter
+inference of a Gaussian Mixture Model. By showing this equivalence we point out a natural way to get rid of uneven
+membership assignment. 
+
+Then, using 
+a Poisson Mixture Model we formulate an algorithm that we think is more fitting to represent neural populations and their dynamics. Finally we do some simulations and demonstrate the potential of the proposed algorithm. 
+
+This work is very similar to \cite{Moraitis2021} and \cite{Keck2012} specially in terms of the theory
+behind it, but the proposed algorithm differs from those proposed in
+these papers. We argue that the framework used here and in the aforementioned papers provide a
+probabilistic interpretation of the underlying learning process.
+\end{abstract}
+
+\pagebreak
+
+\tableofcontents
+
+\pagebreak
+
+\section{Winner Take It All Networks}
+Winner Takes it All Networks (WTAn) are a special kind of artificial neural network (ANN) for classification. They consist of two fully connected layers, the input and the output layer. 
+
+\subsubsection*{Input layer}
+We will refer to the \(i^{th}\) value associated with the \(i^{th}\) input neuron with \(x_i\), having in total \(M\) neurons in this layer. The entire input vector is denoted by \(^nx\), where \(n\) denoted the index of the input, having in total \(N\) of these input vectors in one data set. 
+
+\subsubsection*{Output layer}
+Likewise we will refer to any of the \(K\) neurons in the output layer as neuron \(z_j\). The goal is to optimally classify the inputs using the \(K\) output neurons. 
+
+\subsubsection*{Connections between layers}
+Associated with every connection between any \(x_i\) and \(z_j\) neurons we have the weight \(\lambda_{ji}\). Every output neuron has a collection of weights associated to it denoted by \(\lambda_{j:}\). We use \(\Lambda\) to describe all of the weights in matrix from where \(\lambda_{j:}\)'s are the rows of the matrix. 
+
+%%TODO: make picture with appropiate symbols, aslo maybe the matrix
+%%mutliplication of the output. Perhaps pseudocode?
+
+WTAn have been studied in computational neuroscience because they provide a simple
+model for a common connectivity pattern in the brain cortex, where
+neurons compete with each other for activation through lateral
+inhibition \cite{Keck2012}.
+
+Lateral inhibition is modeled by making it so only one neuron is activated in the output layer per input. The winning neuron is the one with weights \(\lambda_{j:}\) that are the closest,
+according to some measure of distance, to the \(n^{th}\) input vector
+\(x\) \footnote{When its not important to indicate the index of the data point,
+\(x\) will be used instead of \(^nx\)}. It is important to note that in these networks the inputs do not get multiplied by the weights like in most ANNs, but are simply compared to the inputs on every iteration in order to find the closest \(\lambda_{j:}\). 
+
+Learning takes place through adjustments of the weights, \(\Lambda\), every time an input is presented to the network (e.g in a n online fashion). The idea is that given an input pattern
+\(^nx\), the associated weights \(\lambda_{j:}\) of winning neuron
+\(z_j\) gets adjusted such that if the same or a similar input
+\(^{n+1}x\) is presented to the network then \(z_j\) is again the
+winner, thereby successfully classifying the input. 
+
+Even thou it is convenient to think of all \(\lambda_{j:}\) weights
+associated with winning neuron \(z_j\) to be updated as a whole in
+vector form, we can also think of the update as taking place
+individually for each element of \(\lambda_{ji}\), associated with input
+neuron \(x_i\) and output neuron \(z_j\). The weight updates then become
+akin to Hebbain learning where learning happens locally at each synapse.
+
+If we restrict the weights and the inputs to be normalized, such that
+the sum of the elements in the input vectors \(x\) and the weight vectors
+\(\lambda_{j:}\) are equal to a constant \(\alpha\) \eqref{norm1} \eqref{norm2}, we can
+implement the learning by nudging the previous weight vectors
+\(\lambda_{j:}\) in the direction of the input. This nudge would be a function of the difference between
+\(\lambda_{j:}\) and input vector \(x\) \eqref{km-nudge}. \footnote{For more
+information on the biological plausibility and  of
+normalization in biological neural circuits we refer the reader to \cite{Keck2012}.}
+
+\begin{IEEEeqnarray}{rCl} 
+\sum_{i=1}^M \lambda_{ji} &=& \alpha \label{norm1}\\
+\sum_{i=1}^M x_i &=& \alpha \label{norm2} \\
+\lambda^{(t)}_{j:} &\leftarrow& \lambda^{(t-1)}_{j:} - \eta \epsilon'(x - \lambda^{(t-1)}_{j:}) \label{km-nudge}
+\end{IEEEeqnarray}
+
+Here \(^{(t)}\) indicates the index of the iteration in the context of an
+algorithm, and \(\eta\) is a small positive learning rate.
+
+If we choose the squared L2 norm as our measure of distance
+\(\epsilon(x - \lambda^{(t-1)}_{j:})\) we can take the derivative w.r.t
+\(\lambda_{j:}\) and use the result as the update function
+\(\epsilon'(x - \lambda^{(t-1)}_{j:})\).
+
+\begin{IEEEeqnarray}{rCl} 
+\epsilon(x - \lambda^{(t-1)}_{j:}) &=& \frac{1}{2} ||x - \lambda^{(t-1)}_{j:}||_2^2 \\
+\frac{d}{d\lambda^{(t-1)}_{j:}} \epsilon(x - \lambda^{(t-1)}_{j:})  &=& \frac{d}{d\lambda^{(t-1)}_{j:}} \frac{1}{2} ||x - \lambda^{(t-1)}_{j:}||_2^2 \\
+ &=& -(x - \lambda^{(t-1)}_{j:}) \\
+ &=& \epsilon'(x - \lambda_{j:}) \\
+ \lambda^{(t)}_{j:} & \leftarrow & \lambda^{(t-1)}_{j:} + \eta (x - \lambda^{(t-1)}_{j:}) \label{okm_nudge}
+\end{IEEEeqnarray}
+
+The result is an online version of the K-means algorithm (Algorithm \ref{online-kmeans}), where upon an input, the closest centroid (here the weights \(\lambda_{j:}\)), gets
+pulled towards the coordinates of the input \(x\) \eqref{okm_nudge}. 
+
+\begin{algorithm}
+\caption{Online K-means} \label{online-kmeans}
+\begin{algorithmic}
+
+\textbf{Step 0.} Initialize parameters for each centroid.
+
+$$
+\Lambda \leftarrow \text{init.}
+$$
+
+\textbf{Step 1.} For every incoming $n$ data point find the closes cluster.
+
+$$
+^nz^{(t)}_j = \underset{\lambda_{j:}}{\operatorname{arg min}} \| ^nx - \lambda_{j:}\|_2^2
+$$
+
+\textbf{Step 2.} Update the winning centroid $z_j$
+
+$$
+\lambda^{(t)}_{j:} \leftarrow \lambda^{(t-1)}_{j:} + \eta (x - \lambda^{(t-1)}_{j:})
+$$
+
+\textbf{Step 3.} Repeat step 1 and 2 for every incoming input
+
+\end{algorithmic}
+\end{algorithm}
+
+A perfect
+equivalence with the K-means algorithm would require that all the inputs
+\(^nx\) to be presented at once. In such case we would simply adjust our
+cost function to account for all the data points \(N'\) associated to
+the winning neuron \(z_j\). By minimizing this quantity, applying the
+derivative, setting it to zero and solving for \(\lambda_{j:}\) \eqref{batch_1} - \eqref{batch_2}, we find
+that the update is the same as in the K-means algorithm (Algorithm \ref{kmeans}), showing the
+equivalence between these two seemingly different clustering sachems.
+
+\begin{IEEEeqnarray}{rCl} 
+\epsilon(X - \lambda_{j:}) &=& \frac{1}{2} \sum_{n=1}^{N'} ||^nx - \lambda_{j:}||_2^2  \label{batch_1} \\
+\hat{\lambda_{j:}} &=& \underset{\lambda_{j:}}{\operatorname{arg min}} \frac{1}{2}  \sum_{n=1}^{N'} ||^nx - \lambda_{j:}||_2^2 \\
+\hat{\lambda_{j:}} &=& \frac{1}{N'} \sum_{n=1}^{N'} (^nx) \label{batch_2}
+\end{IEEEeqnarray}
+
+\begin{algorithm}
+\caption{K-means} \label{kmeans}
+\begin{algorithmic}
+
+\textbf{Step 0.} Initialize parameters for each centroid.
+
+$$
+\Lambda \leftarrow \text{init.}
+$$
+
+\textbf{Step 1.} For all $N$ data points find the closes cluster and assign it
+membership over the data point.
+
+$$
+^nz^{(t)}_j = \underset{\lambda_{j:}}{\operatorname{arg min}} \| ^nx - \lambda_{j:}\|_2^2
+$$
+
+\textbf{Step 2.} Update the $K$ centroids, with the average of the coordinates of its
+children data points.
+
+$$
+\lambda_{j:}^{(t+1)} = \frac{1}{N'} \sum_{n=1}^{N'} (^nx)
+$$
+
+\textbf{Step 3.} Repeat step 1 and 2 until convergence
+
+\end{algorithmic}
+\end{algorithm}
+
+The vanilla WTAn as well as the K-means algorithm have the problem
+that because only the weights \(\lambda_{j:}\) associated to the wining
+neuron \(z_j\) get updated, it is common for some centorids to be
+assigned two or more clusters of data points, while other centroids are
+left without ``children'' data points and hence never get updated. Here
+we call this issue uneven membership assignment. 
+
+%% TODO: picture with uneaven membershi assignment
+
+This is partly due to the ``hardness'' of the assignment step, or in other words the fact that
+only one neuron can win and therefore represent a given input. By
+modeling centroids as being only partly responsible for a given data
+point, instead of belonging exclusively to one, we can bypass
+this problem. This idea of responsibility allows us to model multiple output neurons getting
+activated upon an input, which is a more realistic model of the dynamics in a population of neurons. In order to formally define this notion of responsibility we must first introduce mixture models. 
+
+\section{Mixture Models}
+A mixture model is a probabilistic model for representing the presence
+of sub populations within an overall population, without requiring that
+an observed data set identifies the sub-population to which an
+individual observation belongs (e.g without labels). Usually mixture models are used to make
+statistical inferences about the properties of the sub-populations given
+only observations on the pooled population \cite{Mixture_model}.
+
+Just by reading this description we can already sense that mixture
+models might be a good fit for modeling the classification of patterns as
+in the WTAn, where we seek to differentiate between distinct input sub-populations. The idea is
+that each observations is distributed according to a mixture of components, where all the components belong to the same parametric family of distributions but with different parameters \eqref{mm_likl}. The parameters of each component represent the distinct sub-populations and so we then seek to find the parameters that best explain our data in terms of some number of sub-populations. We specify a mixture model with he following notation (note the correspondence to the previous section).
+
+\begin{itemize}
+\item
+  \(K\) is the number of mixture components, individual components indicated
+  with subscript \(j\). Sometimes we refer to components as clusters, mixtures, sub-populations, and further on as output neurons. 
+\item
+  \(N\) is the number of observations, individual observations indicated with
+  left superscript \(n\), where each observation
+  $^nx \in \mathbb{R}^M$ and \(^nx_i\) is the \(i^{th}\)
+  element of the \(n^{th}\) observation.
+\item
+  \(w\) is the vector of mixture weights
+  where \(w_j\) is the mixture weight of component \(j\). Can also be
+  expressed as the prior probability \(P(z_j|\theta)\) of a random data
+  point belonging to any of the \(K\) components. Note that
+  \(\sum_{j=1}^k w_j = 1\)
+\item
+  \(\Lambda\) is the matrix of parameters, where rows
+  \(\lambda_{j:}\) are the parameters that correspond to the $j^{th}$ component.
+  \(\lambda_{ji}\) denotes the the \(ji^{th}\) entree of $\Lambda$.
+\item
+  $^nz \in \mathbb{R}^K$ is the vector of probabilities where \(^nz_j\) is
+  RV representing the probability of data point \(n\) belonging to
+  cluster j.
+\item
+We will use $z_j$ without superscript as a marker variable indicating that we are referring only to the distribution of component $j$. For example $P(x | z_j , \theta)$. Indicates the probability that standpoint $x$ came from the distribution of component $j$.
+\item
+  $^{(t)}$ indicates the index of the iteration in the context of an algorithm.
+\item
+  \(\theta = \{w, \Lambda\}\) is the set of all parameters
+\end{itemize}
+
+The likelihood of one data point can be written as follows, where
+\(P(x | z_j , \theta)\) is the probability density function of the
+\(j^{th}\) component.
+
+\begin{IEEEeqnarray}{rCl} 
+\mathcal{L}(x:\theta) &=& \sum_{j=1}^K P(z_j|\theta) P(x | z_j , \theta) \label{mm_likl} \\
+\mathcal{L}(x:\theta) &=& \sum_{j=1}^K w_j P(x | z_j , \theta)
+\end{IEEEeqnarray}
+
+There is two main inference problems when dealing with mixture models.
+On one hand one would like to know the number and functional form
+(parametric family) of the components within a mixture. This is usually
+referred to as the system identification. On the other hand one would
+like to estimate the corresponding parameter values given a fixed number
+of components and their functional form. This is referred to as
+parameter estimation \cite{Mixture_model}. In this work we concern ourselves with he problem of
+parameter estimation, since we assume that the number of components and
+their underlying distributions is fixed. Furthermore we take Expectation
+Maximization as or method of choice for inference. \footnote{The reason behind this choice is that we
+will show that a constrained form of EM for Gaussian Mixture Models is equivalent to K-means.}
+
+In the context of mixture models, the EM can be seen as unsupervised
+learning algorithm. This is interesting because if it is applicable to
+learning in WTAs it loosely implies that it might be useful to reason
+about learning in the brain as an unsupervised learning procedure, where
+the hidden RVs are the stimuli which generate specific input
+pattern distributions (the observed RV) that the brain then categorizes
+as belonging to the stimuli or cause by tuning the weights of the synapses.
+
+\subsection{The EM algorithm}
+After initialization of the parameters, the EM
+starts by performing the expectation step (E-step), where expectation
+values for the membership variables of each data point are computed,
+followed by and maximization step, or M step which completes one full
+iteration. These two steps are repeated until the parameters converge.
+
+In the E step we seek to find the responsibility \(\gamma_j(^nx)\) of
+each cluster on each data point \(^nx\), or in other words the
+probability that data point \(^nx\) belongs to cluster \(j\).
+
+\begin{IEEEeqnarray}{rCl} 
+\gamma_j(^nx) &=& P (z_j | ^nx, \theta) \\
+&=& \frac{P(z_j, ^nx, \theta)}{P(^nx, \theta)} \\
+&=& \frac{P(^nx|z_j, \theta) P(z_j | \theta)}{P(^nx| \theta)}\\
+P(^nx|\theta) &=& \sum_k P(^nx|\theta, z_k) P(z_k|\theta)
+\end{IEEEeqnarray}
+
+We know from before that \(P(z = j|\theta) = w_j\) are the prior
+probabilities and \(P(^nx|\theta, z = k)\) is the likelihood, which
+depends on the parametric family we decide on.
+
+\begin{IEEEeqnarray}{rCl} 
+\gamma_j(^nx) &=& \frac{w_jP(^nx|\theta, z_k)}{\sum_{j=1}^K w_k P(^nx|\theta, z_k)} \label{gamma}
+\end{IEEEeqnarray}
+
+Once we have all the \(\gamma\)'s for each data point, we again have a
+fully annotated data set, namely the responsibilities and the coordinates
+of the data points. We can now move on to infer the parameters
+\(\theta\) in the M step using the previously estimated \(\gamma\)'s. For
+this we take the expression of the likelihood of the data given the
+parameters and we maximize its lower bound. The derivation is as
+follows.
+
+We can rewrite equation \eqref{gamma} accounting for all
+\(N\) data points, applying the log and then Jensen's inequality to get
+the lower bound on the data likelihood \footnote{For a more detailed derivation
+we refer the reader \cite{malone_2014}.}. We maximize this
+quantity \eqref{b_theta} instead of the log likelihood directly simply because of the log likelihood is hard to evaluate.
+
+\begin{IEEEeqnarray}{rCl} 
+\mathcal{\log L}(D:\theta) &\ge & b(\theta)\\
+\mathcal{\log L}(D:\theta) &=& \sum_{n=1}^N\log\sum_{j=1}^K w_j P(^nx | z_j , \theta) \\
+b(\theta) &=& \sum_{n=1}^N \sum_{j=1}^K \gamma_j(^nx)\log\frac{w_j P(^nx | z_j , \theta)}{\gamma_j(^nx)} \label{b_theta}
+\end{IEEEeqnarray}
+
+We can then expand the logarithm, distribute \(\gamma_j(^nx)\), and
+split the sum.
+
+\begin{IEEEeqnarray}{rCl} 
+b(\theta) &=& \sum_{n=1}^N \sum_{j=1}^K \gamma_j(^nx)\log w_j P(^nx | z_j , \theta) - \sum_{n=1}^N \sum_{j=1}^K \gamma_j(^nx)\log \gamma_j(^nx)
+\end{IEEEeqnarray}
+
+Because the \(\gamma_j(^nx)\)'s are already fixed from the E step we can
+concentrate only on the first term which we term \(Q(\theta)\).
+
+\begin{IEEEeqnarray}{rCl} 
+Q(\theta) &=& \sum_{n=1}^N \sum_{j=1}^K \gamma_j(^nx)\log w_j P(^nx | z_j , \theta)
+\end{IEEEeqnarray}
+
+To get an estimate for the our parameters \(\theta\) we perform the
+partial derivatives with respect to each \(\lambda_{ji}\) and \(w_j\),
+make it equal to 0, and solve for the corresponding parameter. This will
+look different depending on the parametric family we choose and also the
+assumptions we make (e.g if we uniform fixed priors or we have them
+fixed).
+
+\begin{algorithm}
+\caption{EM algorithm} \label{generic_em}
+\begin{algorithmic}
+\textbf{Step 0.} Initialize parameters.
+$$
+\theta \leftarrow \text{init.}
+$$
+
+\textbf{E step.} Compute $\gamma_j(^nx)$ for each \(n\) data point and each component \(j\).
+$$
+\gamma_j(^nx) = \frac{w_jP(^nx|\theta, z_j)}{\sum_{j=1}^K w_k P(^nx|\theta, z_j)}
+$$
+
+\textbf{M-step.} Optimize the lower bound of the log likelihood $Q(\theta)$ to update $\theta$.
+$$
+\frac{dQ(\theta)}{d \theta} = \frac{d}{d \theta}\sum_{n=1}^N \sum_{j=1}^K \gamma_j(^nx)\log w_j P(^nx | z_j , \theta)
+$$
+
+\textbf{Step 3.} Repeat E and M step until \(\theta\) converges.
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Gaussian Mixture Models}
+In the following subsection we show that by considering the components of a mixture
+model to be Gaussian and by further constraining it, namely by enforcing
+fixed spherical variances in all components and fixed uniform mixture weights, we
+recover the K-means algorithm, which implies that we might be able to
+use the EM algorithm to device a more general procedure for learning
+with a WTAn. This constrained version of the EM algorithm is termed
+the Hard. We then show how by easing up these restrictions we obtain a
+similar version of K-means but with soft membership assignment, which
+naturally eases the uneven membership problem. This is called the Soft
+EM for Gaussian Mixture Models (GMMs). 
+
+\subsubsection{The Soft EM for GMMs}
+We simply have to plug in our Gaussian assumption, e.g. $P(^nx | \theta, z_j) = \mathcal{N}(^nx|\theta, z_j)$. The parameters then become $\theta = \{w, \mu, \Sigma}$, where each component $j$ has its own collection of parameters $\{w_j, \mu_j, \Sigma_j\}$ \footnote{Note that we assume each component to be multivariate Gaussian}. 
+
+\begin{algorithm}
+\caption{Soft EM for GMMs} \label{soft_em}
+\begin{algorithmic}
+\textbf{Step 0.} Initialize parameters $\theta = \{w, \mu, \Sigma\}$.
+$$
+\theta \leftarrow \text{init.}
+$$
+
+\textbf{E step.} Compute $\gamma_j(^nx)$ for each \(n\) data point and each component \(j\).
+$$
+\gamma_j(^nx) = \frac{w_j\mathcal{N}(^nx|\theta, z_j)}{\sum_{j=1}^K w_k \mathcal{N}(^nx|\theta, z_k)}
+$$
+
+\textbf{M-step.} Update $\theta$.
+\[
+w_j^{(t)} \leftarrow \frac{1}{n} \sum_{i=1}^n \gamma_j^{(t)}(^nx) 
+\]
+
+\[
+\mu_j^{(t)} \leftarrow \frac{\sum_{i=1}^n \gamma_j^{(t)}(^nx)^nx}{\sum_{i=1}^n \gamma_j^{(t)}(^nx)}
+\]
+
+\[
+\Sigma_j^{(t)} \leftarrow \frac{\sum_{i=1}^n \gamma_j^{(t)}(^nx)(^nx-\mu_j^{(t)})(^nx-\mu_j^{(t)})^T}{\sum_{i=1}^n \gamma_j^{(t)}(^nx)}
+\]
+
+\textbf{Step 3.} Repeat E and M step until \(\theta\) converges.
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{The Hard EM for GMMs}
+
+For the Hard EM the E-step classifies each data point as belonging to
+only one of the clusters. Intuitively we choose the cluster with the highest $P (z_j | ^nx, \theta)$, then we make $\gamma_j(^nx) = 1$ for all but the wining component, and 0 for the rest. Then by enforcing fixed
+spherical variance in all components ($\Sigma_1,...,\Sigma_K = I\sigma$) and fixed uniform mixture weights ($\forall j, w_j = \frac{1}{K}$), we are only left with the updates of $\mu_j$ that simplify into the simple average of all the data points belonging to cluster $j$.
+
+We can also simplify the E-step as follows. As stated above we seek the cluster that maximizes $P (z_j | ^nx, \theta)$.
+
+\begin{IEEEeqnarray}{rCl} 
+^nz^{(t)} = \underset{j}{\operatorname{arg max}} P(z_j | ^nx, \theta^{(t-1)})
+\end{IEEEeqnarray}
+
+We can decompose \(P(z_j | ^nx, \theta^{(t-1)})\) using Bayes rule to
+get the follwoing expression.
+
+
+\begin{IEEEeqnarray}{rCl} 
+^nz^{(t)} = \underset{j}{\operatorname{arg max}} \frac{1}{Z} P(z_j | \theta^{(t-1)}) P(^nx | z_j, \theta^{(t-1)}) 
+\end{IEEEeqnarray}
+
+\(\frac{1}{Z}\) is the normalization constant from Bayes rule which is
+also independent of \(z\) and therefor can be omitted in the maximization. By assuming that each cluster has the same size, \(P(z | \theta^{(t-1)})\) to be constant we can take them out of the maximization argument.
+
+\begin{IEEEeqnarray}{rCl} 
+^nz^{(t)} = \underset{j}{\operatorname{arg max}} \frac{1}{\sqrt{(2\pi\sigma^2)^d}} \exp(\frac{-1}{2\sigma^2} \| ^nx - \mu_j^{(t-1)}\|_2^2 )
+\end{IEEEeqnarray}
+
+We can see again that the maximization is only over the squared 2-norm
+and we can also note that maximizing this quantity is equivalent to
+minimizing the 2-norm.
+
+\begin{IEEEeqnarray}{rCl} 
+^nz^{(t)} = \underset{z}{\operatorname{arg min}} \| ^nx - \mu_j^{(t-1)} \|_2
+\end{IEEEeqnarray}
+
+Thereby the E-step becomes to Step 1 of K-means (Algorithm \ref{kmeans}). 
+
+\begin{algorithm}
+\caption{Hard EM for GMMs} \label{hard_em}
+\begin{algorithmic}
+\textbf{Step 0.} Initialize parameters $\theta = \mu$.
+$$
+\mu \leftarrow \text{init.}
+$$
+
+\textbf{E step.} Compute $^nz^{(t)}$ for each \(n\) data point.
+$$
+^nz^{(t)} = \underset{z}{\operatorname{arg min}} \| ^nx - \mu_j^{(t-1)} \|_2
+$$
+
+\textbf{M-step.} Update $\mu$.
+$$
+\mu_j^{(t)} = \frac{1}{N'} \sum_{n=1}^{N'} (^nx)
+$$
+
+\textbf{Step 3.} Repeat E and M step until \(\theta\) converges.
+\end{algorithmic}
+\end{algorithm}
+
+We can now see that by considering constant variances and
+weights the Hard EM (Algorithm \ref{hard_em}) performs exactly the same operations as the K-means (Algorithm \ref{kmeans}) and is therefore equivalent.
+
+By relaxing both the constant variances and
+weights constraint we allow the underlying cluster to have
+different sizes and elliptical shapes, which allowed us to capture richer structures in the data. Doing so often leads to enhanced performance specially when the clusters are overlapping. 
+
+Likewise, by
+using membership instead of hard assignments we account for the
+uncertainty of the assignments. This help poorly initialized clusters get updated, since
+even if they are far away from data points initially, they will still have a
+responsibility over them and will therefore move towards the data. Thus this approach resolves the uneven membership assignment issue that is encountered in K-means and vanilla WTAn.
+
+\section{Optimization Via Gradient Accent}
+The EM formulated above updates the parameters by performing MLE over $N$ data points. Because this involves a group of data points and we would like an algorithm that updates the parameters base only on one observations at a time (e.g. online), we turn towards gradient accent. By continuously take small steps in the direction of the gradient of the lower bound of the likelihood function $Q(\theta)$, one can eventually reach a local maximum of $Q(\theta)$ \cite{piech_2018}. 
+
+In the following we show this approach for the Gaussian and constrained Hard EM. 
+
+\begin{IEEEeqnarray}{rCl} 
+\mu_j^{(t)} &=& \mu_j^{(t-1)} + \eta \frac{\delta Q(\mu_j^{(t-1)})}{\delta \mu_j^{(t-1)}} \label{ga} \\
+Q(\theta) &=& \sum_{n=1}^N \sum_{j=1}^K \gamma_j(^nx)\log w_j P(^nx | z_j , \theta)
+\end{IEEEeqnarray}
+
+Since in the Hard EM all \(\gamma_j(^nx)\) are 0 except for that the
+parent component, the variance is spherical, and we only have one data point
+(\(N = 1\)) we have that \(Q(\theta)\) is equal to:
+
+\begin{IEEEeqnarray}{rCl} 
+Q(\theta) &=& \log P(x | z_j , \theta) = \log w_j \mathcal{N}(x | z_j , \mu_j, \Sigma_j)\\
+&=& \log w_j + \log \frac{1}{\sqrt{(2\pi\sigma^2)^d}} + \log \exp(\frac{-1}{2\sigma^2} \| x - \mu_j^{(t-1)}\|_2^2 )
+\end{IEEEeqnarray}
+
+We can further remove positive constant multipliers because they don't affect the direction of the gradient and terms that don't include \(\mu_j^{(t-1)}\), because they will be 0 anyway when we take the derivative. 
+
+\begin{IEEEeqnarray}{rCl} 
+Q(\theta) &=&  -\| x - \mu_j^{(t-1)}\|_2^2 \\
+\frac{\delta Q(\mu_j^{(t-1)})}{\delta \mu_j^{(t-1)}} &=& 2 ( x - \mu_j^{(t-1)}) 
+\end{IEEEeqnarray}
+
+We can again remove the 2 because it does not affect the direction of the gradient. Plugging in this into equation \eqref{ga} we obtain the following. 
+
+\begin{IEEEeqnarray}{rCl} 
+\mu_j^{(t)} = \mu_j^{(t-1)} + \eta' ( x - \mu_j^{(t-1)}) 
+\end{IEEEeqnarray}
+
+We see how this recovers the online K-means algorithm shown in the first
+section (Algorithm \ref{online-kmeans}). Now that we have a way of deriving an update rule we can go back to a general mixture model, decide on the parametric family and derive and EM algorithm that can also be computed with a modified WTAn. Specifically we will choose this family to be the Poisson distribution. 
+
+\section{EM for Poisson Mixture Models}
+Previously we chose the likelihood of the data \(P(x | z, \theta)\) to
+be Gaussian but this was simply to show the equivalence with the K-means
+algorithm. It might make more sense to use the Poisson since we
+would can think of entrees in \(^nx_i\) vectors to represent spiking events. This makes
+sense since a Poisson RV represents the number of occurrences or a random
+event withing a specific time frame. Furthermore, with normal distributions
+there is always a possibility that a number drawn from such distribution
+is negative which would not make sense if we decide to think of the inputs as spiking events.
+
+\subsection{E-step}
+
+\begin{equation*}
+\gamma_j(^nx) = P (z_j | ^nx, \theta) = \frac{P(^nx|z_j, \theta) P(z_j | \theta)}{\sum_k P(^nx|\theta, z_k) P(z_k|\theta)} \tag{\ref{gamma} revisited}
+\end{equation*}
+
+\(P(^nx|\theta, z_j) = \prod_{i=1}^M \text{Pois}(^nx_i; \lambda_{ji})\),
+where \(\lambda_{ji}\) denotes the rate parameter of component \(j\)
+from element \(i\) of the \(n^{th}\) input. Note that this assumes that
+that the input from each neuron is generated form an independent
+Poisson, when in reality there might be strong correlation between the
+activities \(x_i\). Here we limit ourselves to the independent case but perhaps there is a more fitting way of expressing
+this likelihood, maybe as a multivariate Poisson \cite{inouye2017}.
+
+\begin{IEEEeqnarray}{rCl}
+\text{Pois}(^nx_i; \lambda_{ji}) &=& Pr(X=^nx_i) = \frac{\lambda_{ji}^{^nx_i} e^{-\lambda_{ji}}}{^nx_i!}\\
+\gamma_j(^nx) &=& \frac{w_j \prod_{i=1}^M \text{Pois}(^nx_i; \lambda_{ji})}{\sum_{k=1}^K w_k \prod_{i=1}^M \text{Pois}(^nx_i; \lambda_{ki})}\\
+ &=& \frac{w_j \exp{\bigg(\sum_{i=1}^M ^nx_i\log\lambda_{ji}} \bigg)}{\sum_{k=1}^K w_k \exp{\bigg(\sum_{i=1}^M ^nx_i\log\lambda_{ki}\bigg)}} \label{softmax}\\
+ &=& \frac{w_j \prod_{i=1}^M \lambda_{ji}^{^nx_i} }{\sum_{k=1}^K w_k \prod_{i=1}^M \lambda_{ki}^{^nx_i} }
+\end{IEEEeqnarray}
+
+\subsection{M-step}
+
+\begin{IEEEeqnarray}{rCl}
+Q(\theta) &=& \sum_{n=1}^N \sum_{j=1}^K \gamma_j(^nx)\log w_j P(^nx | z_j , \theta)\\
+&=& \sum_{n=1}^N \sum_{j=1}^K \gamma_j(^nx)\log w_j \prod_{i=1}^M \frac{\lambda_{ji}^{^nx_i} e^{-\lambda_{ji}}}{^nx_i!}\\
+&=& \sum_{n=1}^N \sum_{j=1}^K \gamma_j(^nx) \bigg( \log w_j + \sum_{i=1}^M \log \frac{\lambda_{ji}^{^nx_i} e^{-\lambda_{ji}}}{^nx_i!}\bigg)
+\end{IEEEeqnarray}
+
+The derivative of every term which does not involve the \(\lambda_{ji}\)
+is 0, thus we can ignore such terms.
+
+\begin{IEEEeqnarray}{rCl}
+\frac{\delta Q(\theta)}{\delta \lambda_{ji}} &=& \frac{\delta}{\delta \lambda_{ji}} \sum_{n=1}^N \gamma_j(^nx) \bigg( \log w_j + \log \lambda_{ji}^{^nx_i} + \log e^{-\lambda_{ji}} - \log(^nx_i!)\bigg)\\
+&=& \frac{\delta}{\delta \lambda_{ji}} \sum_{n=1}^N \gamma_j(^nx) \bigg( \log w_j + {^nx_i} \log \lambda_{ji} -\lambda_{ji} - \log(^nx_i!)\bigg)\\
+&=& \sum_{n=1}^N \gamma_j(^nx) \bigg( \frac{^nx_i}{\lambda_{ji}} - 1\bigg)
+\end{IEEEeqnarray}
+
+For the batch case the closed form MLE estimate for the new
+\(\lambda_{ji}\) and \(w_j\) are as follows.
+
+\begin{IEEEeqnarray}{rCl}
+\lambda_{ji} &=& \frac{\sum_{n=1}^N \gamma_j(n^x_i) ^nx_i}{\sum_{n=1}^n \gamma_j(^nx_i)}\\
+w_j &=& \frac{\sum_{n=1}^N \gamma_j(^nx_i)}{N}
+\end{IEEEeqnarray}
+
+Furthermore we can consider the update via gradient ascent in which case
+we get the following expressions.
+
+\begin{IEEEeqnarray}{rCl}
+\lambda_{ji}^{(t)} &\leftarrow & \lambda_{ji}^{(t-1)} + \eta \frac{\delta Q(\theta)}{\delta \lambda_{ji}}\\
+\lambda_{ji}^{(t)} &\leftarrow & \lambda_{ji}^{(t-1)} + \eta \gamma_j(^nx) \bigg( \frac{^nx_i - \lambda_{ji}^{(t-1)}}{\lambda_{ji}^{(t-1)}} \bigg) \label{lr}
+\end{IEEEeqnarray}
+
+If we consider the \(w_j\)'s to be fixed we need only update the
+centroids \(\lambda_{ji}\). Note that in this case we kept the constant
+positive multiplier \(\gamma_j(^nx)\) since it provides a way to modulate
+the strength of the learning depending on the degree of responsibility
+that the mixture \(j\) over element \(i\) of data point \(n\).
+
+\begin{algorithm}
+\caption{Online EM for a PMM} \label{pois_em}
+\begin{algorithmic}
+\textbf{Step 0.} Initialize parameters.
+$$
+\Lambda \leftarrow \text{init.}
+$$
+
+\textbf{E step.} Compute $\gamma_j(^nx)$ for each \(n\) data point and each component \(j\).
+$$
+\gamma_j(^nx) = \frac{w_j \exp{\bigg(\sum_{i=1}^M ^nx_i\log\lambda_{ji}} \bigg)}{\sum_{k=1}^K w_k \exp{\bigg(\sum_{i=1}^M ^nx_i\log\lambda_{ki}\bigg)}}
+$$
+
+\textbf{M-step.} Optimize the lower bound of the log likelihood $Q(\theta)$ to update $\Lambda$.
+$$
+\lambda_{ji}^{(t)} \leftarrow  \lambda_{ji}^{(t-1)} + \eta \gamma_j(^nx) \bigg( \frac{^nx_i - \lambda_{ji}^{(t-1)}}{\lambda_{ji}^{(t-1)}} \bigg)
+$$
+
+\textbf{Step 3.} Repeat E and M step at every input.
+
+\end{algorithmic}
+\end{algorithm}
+
+\section{Poisson WTAn}
+Its not difficult to see that the Online EM for a PMM (Algorithm \ref{pois_em}) is not too different from the online K-means (Algorithm \ref{online-kmeans}). Instead of neurons in the output layer having all or non responses we have a normalized output $\gamma_j(^nx)$ as a weighted soft-max function \eqref{softmax}. This is a different and perhaps more accurate way of modeling the response of a population to an input, specially when considering lateral inhibition. The learning rule is again not too different, the only difference being that the change in the coefficient is the ratio of the difference and the old parameter, scaled by the normalized output $\gamma_j(^nx)$ \eqref{lr}. 
+
+In sum, the proposed WTAn would consist of two step iterations upon input, and the learning would take place locally (each synapse implements their own adjustments separately), just as in the original version of the WTAn.
+
+\section{Discussion}
+By showing that a WTA is equivalent to an online
+version of the EM algorithm we also show that it shares the same
+theoretical assurances, namely that algorithm maximizes the lower bound
+of the likelihood. But perhaps even more importantly, it gives us a
+probabilistic framework which we can use to reason about the learning.
+
+Specifically, the mixture weights \(w_j = P(z_j | \theta)\) can be
+thought of as the overall probability that a random data point belongs
+to any given component. Here we propose that such probability can be
+seen as the homeostatic neuronal activity of the output neurons,
+e.g. the probability that a neuron will get activated, regardless of the
+input. While our model does not learn these parameters, we set them
+a priori as hyper-parameters.
+
+Furthermore \(\gamma_j(^nx) = P (z_j | ^nx, \theta)\) can be view as the
+same probability but conditional on the input or alternatively, the
+percentage of activity that output neuron \(j\) has relative to all of
+the output neurons. In a biological context it would be natural that the
+intensity with which the output neuron reacts to a stimuli affects the
+strength of the learning, that is the magnitude of the change in the
+synaptic weights \eqref{lr}. 
+
+It would also makes sense
+that the mixing weights \(w_j\) are taken into account for the
+computation \(\gamma_j(^nx)\), the relative activation of output neuron
+\(j\) (note that the mixing weights are only present in the computation
+of the \(\gamma_j(^nx)\)).
+
+Naturally this normalized activity \(\gamma_j(^nx)\) is where the
+lateral inhibition of the output neurons is modeled, such that the overall
+activity is a function of the activity of all of the neurons in the
+output layer. This division operation could be implemented approximately
+with shunting inhibition of example, where the other neurons in the
+output layer set the conductance such that the gain and the summation
+dynamics of neuron \(z_j\) are is determined by the activity of all
+other neurons \cite{carandini1994}. This is due to the fact
+that the output voltage of a postsynaptioc neuron can be modeled as
+being inversely proportional to the conductance (set by lateral shunting
+inhibition) and directly proportional to the driving current resulting
+from the temporal and spatial summation of inhibitory and expiatory
+inputs coming from the input layer. Alternative ways of activity
+normalization have been proposed including synaptic scaling and
+feed-forward inhibition \cite{carandini2012} \cite{pouille2009}. It is not
+clear how exactly a ensemble of biological neurons would implement exactly the
+operation to compute \(\gamma_j(^nx)\).
+
+We further note that the proposed algorithm consists only of computing
+the normalized output of each neuron and then updating the synaptic
+weights, which as you can see from equation \eqref{lr}
+only involves the quantities that are local to the synapse, and is thus quite
+Habbian like. 
+
+Perhaps a word of caution since it does not make
+sense to think of \(\lambda_{ji}\) as synaptic weights, but rather in this context they
+can bee seen as the guess made by neuron \(j\) for the rate parameter of
+the Poisson process that originates the activity from input neuron \(i\),
+which gets pushed up and down depending on the how responsive output
+neuron \(j\) is. Perhaps there is away to show that the change in synaptic weights is repeatable to parameter \(\lambda_{ji}\).
+
+In the following section we provide the results from the simulations of the proposed algorithm. The code in this available in this \href{https://github.com/Sann5/neural_populations}{\color{draculacyan} gitHub repository}. 
+
+\section{Simulations}
+hola :)
+
+\printbibliography
+\end{document}
