@@ -9,89 +9,13 @@
 \usepackage{algpseudocode}
 \usepackage{IEEEtrantools}
 \usepackage{parskip}
-\addbibresource{mybib.bib}
+\usepackage{graphicx}
+\setlength{\abovecaptionskip}{0pt plus 3pt minus 0pt}
+\addbibresource{mybib.bib}    
 
-% For linebreaks inside Verbatim environment from package fancyvrb. 
-    \makeatletter
-        \newbox\Wrappedcontinuationbox 
-        \newbox\Wrappedvisiblespacebox 
-        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
-        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
-        \newcommand*\Wrappedcontinuationindent {3ex } 
-        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
-        % Take advantage of the already applied Pygments mark-up to insert 
-        % potential linebreaks for TeX processing. 
-        %        {, <, #, %, $, ' and ": go to next line. 
-        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
-        % Use of \textquotesingle for straight quote. 
-        \newcommand*\Wrappedbreaksatspecials {% 
-            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
-            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
-            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
-            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
-            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
-            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
-            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
-            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
-            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
-            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
-            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
-            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
-            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
-            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
-        } 
-        % Some characters . , ; ? ! / are not pygmentized. 
-        % This macro makes them "active" and they will insert potential linebreaks 
-        \newcommand*\Wrappedbreaksatpunct {% 
-            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
-            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
-            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
-            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
-            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
-            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
-            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
-            \catcode`\.\active
-            \catcode`\,\active 
-            \catcode`\;\active
-            \catcode`\:\active
-            \catcode`\?\active
-            \catcode`\!\active
-            \catcode`\/\active 
-            \lccode`\~`\~ 	
-        }
-    \makeatother
-
-    \let\OriginalVerbatim=\Verbatim
-    \makeatletter
-    \renewcommand{\Verbatim}[1][1]{%
-        %\parskip\z@skip
-        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
-        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
-        \def\FancyVerbFormatLine ##1{\hsize\linewidth
-            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
-                \doublehyphendemerits\z@\finalhyphendemerits\z@
-                \strut ##1\strut}%
-        }%
-        % If the linebreak is at a space, the latter will be displayed as visible
-        % space at end of first line, and a continuation symbol starts next line.
-        % Stretch/shrink are however usually zero for typewriter font.
-        \def\FV@Space {%
-            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
-            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
-            {\kern\fontdimen2\font}%
-        }%
-        
-        % Allow breaks at special characters using \PYG... macros.
-        \Wrappedbreaksatspecials
-        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
-        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
-    }
-    \makeatother
-    
-
-\title{\color{draculapink}\line(1,0){300}\\Modeling Neural Populations with Mixture Models\\\line(1,0){300}}
-\author{\color{draculapurple}Santiago M. Castro Dau}
-\date{\color{draculapurple}July 2022}
+\title{\color{draculafg}\line(1,0){300}\\Modeling Neural Populations with Mixture Models\\\line(1,0){300}}
+\author{\color{draculafg}Santiago M. Castro Dau}
+\date{\color{draculafg}July 2022}
 
 \begin{document}
 \maketitle
@@ -689,13 +613,11 @@ $$
 \end{algorithmic}
 \end{algorithm}
 
-\section{Poisson WTAn}
-Its not difficult to see that the Online EM for a PMM (Algorithm \ref{pois_em}) is not too different from the online K-means (Algorithm \ref{online-kmeans}). Instead of neurons in the output layer having all or non responses we have a normalized output $\gamma_j(^nx)$ as a weighted soft-max function \eqref{softmax}. This is a different and perhaps more accurate way of modeling the response of a population to an input, specially when considering lateral inhibition. The learning rule is again not too different, the only difference being that the change in the coefficient is the ratio of the difference and the old parameter, scaled by the normalized output $\gamma_j(^nx)$ \eqref{lr}. 
 
-In sum, the proposed WTAn would consist of two step iterations upon input, and the learning would take place locally (each synapse implements their own adjustments separately), just as in the original version of the WTAn.
+Its not difficult to see that the Online EM for a PMM (Algorithm \ref{pois_em}) is not too different from the online K-means (Algorithm \ref{online-kmeans}). Instead of neurons in the output layer having all or non responses we have a normalized output $\gamma_j(^nx)$ as a weighted soft-max function \eqref{softmax}. This is a different and perhaps more accurate way of modeling the response of a population to an input, specially when considering lateral inhibition. The learning rule is again not too different, the only difference being that the change in the coefficient is the ratio of the difference and the old parameter, scaled by the normalized output $\gamma_j(^nx)$ \eqref{lr}. In sum, we propose this modified version of the WTAn with the operations described in algorithm \ref{soft_em}.
 
 \section{Discussion}
-By showing that a WTA is equivalent to an online
+By showing that a WTAn is equivalent to an online
 version of the EM algorithm we also show that it shares the same
 theoretical assurances, namely that algorithm maximizes the lower bound
 of the likelihood. But perhaps even more importantly, it gives us a
@@ -748,16 +670,79 @@ only involves the quantities that are local to the synapse, and is thus quite
 Habbian like. 
 
 Perhaps a word of caution since it does not make
-sense to think of \(\lambda_{ji}\) as synaptic weights, but rather in this context they
-can bee seen as the guess made by neuron \(j\) for the rate parameter of
-the Poisson process that originates the activity from input neuron \(i\),
-which gets pushed up and down depending on the how responsive output
-neuron \(j\) is. Perhaps there is away to show that the change in synaptic weights is repeatable to parameter \(\lambda_{ji}\).
+sense to think of \(\lambda_{ji}\) as synaptic weights, but rather the rate at which neuron ￼$i$ fires at neutron ￼$j$,
+where each neutron $j$ can have different guess for the rate of ￼\(\lambda_{ji}\) \footnote{Perhaps there is away to show that the synaptic weights is somehow connected to parameter \(\lambda_{ji}\).}. When both \(\lambda_{ji}\)￼ and $x_i$￼ are big, the more neuron ￼$j$ will get activated, but when there is a discrepancy between these two, the \(\lambda_{ji}\)￼￼ will be pushed around to mach the input. 
 
 In the following section we provide the results from the simulations of the proposed algorithm. The code in this available in this \href{https://github.com/Sann5/neural_populations}{\color{draculacyan} gitHub repository}. 
 
 \section{Simulations}
-hola :)
+\subsection{Simulations specifications}
+We tested out algorithm on the MNIST data-set \cite{deng2012mnist}. We adjusted the weights through 30 epochs of the training split and tested the performance of the classification on the testing split. Since every image is $28$ by $28$ pixels the input dimension (number of nodes in the input layer) is $784$ and we chose the output dimension to be 50 in order to capture heterogeneity across digits. 
 
+Each training and testing image was normalized, and scaled in compliance with equations \eqref{norm1} and \eqref{norm2}. After we summed 1 to every pixel to avoid numerical problems. We chose the previously mentioned scaling factor $\alpha = 784$, but since we added 1 to every pixel the overall intensity in every image came out to be $1568$, which was the scaling factor we used for the Lambdas.  
+
+The \(\lambda_{ji}\) were initialized according to the mean pixel value across the processed training split plus its standard deviation weighted by numbered drawn from a uniform random distribution. Finally the images were flattened to a 1-dimensional tensor to facilitate matrix operations. 
+
+The simulations were run in two scenarios, uniform fixed mixing weights and log-normal. The sections below shows the results for the uniform mixing weight scenario and we discuss the impact of changing the mixing weights in a subsequent subsection. 
+
+For more implementation details please see the \href{https://github.com/Sann5/neural_populations}{\color{draculacyan} simulations code}.
+
+\subsection{Evolution of the $\lambda_{ji}$}
+In figure \ref{gen_filed_evo} we can see the evolution of the \(\lambda_{j:}\) in heatmap form after each one of the 30 epoch, starting from the top left and going to the right before going down to the next row. 
+
+\begin{figure}[h]
+    \includegraphics[width=\textwidth]{img/output_41_1.png}
+    \caption{Heatmaps of the generative field of the first neuron after each of the 30 epochs. \label{gen_filed_evo}}
+\end{figure}
+
+The first this that caches the eye is that individual neurons display a generative field that resembles a digit. This is a nice result as it indicates that each neuron is the steward of a generative field corresponding to one of the 10 classes. These results are in agreement with the results in \cite{Keck2012}.
+
+The second one is that perhaps 30 epochs is an over kill since it seems that already after the first one the \(\lambda_{j:}\) have settled down into one of the digits. In the next figure you can see the generative fields for each one of the 50 neurons after 30 epochs of training.
+
+\begin{figure}[h]
+    \includegraphics[width=\textwidth]{img/output_43_1.png}
+    \caption{Heatmaps of the generative field of all neurons after 30 epochs. \label{gen_fileds}}
+\end{figure}
+
+We can see that there are multiple neurons representing one single digit, which perhaps helps capture heterogeneity in the typography. For the following classification performance analysis we manually annotated each one of the neurons according to the digit they display in their generative field. 
+
+\subsection{Classification Performance}
+The next figure show the the performance of the trained algorithm in predicting the correct class of the testing images. For each image we computed the \(\gamma(^nx)\) vector, and counted as on-probability the value of the \(\gamma_j(^nx)\)'s that corresponded to the label of the input, and off-probability the  \(\gamma_j(^nx)\) of all the other neurons. We summed these on and off probabilities for each neuron for the whole testing split. Then we aggregated all of the on-probability mass for neurons representing the same digit and the same for the off mass. This quantities are then represented in the bar char below.
+
+\begin{figure}[h]
+    \includegraphics[width=\textwidth]{img/output_47_0.png}
+    \caption{Off and on probability of predictions for every image on the testing split. \label{on-off}}
+\end{figure}
+
+We can see that there is a significant amount of off-probability specially for digits 4 and 9 which are often very similar. In fact when you look at the number of images that are classified correctly according to the maximally exited neuron, only around 80\% of the test images classified correctly. 
+
+To further investigate why the performance is not better even when the generative fields show neat digits we displayed examples where the input was not classified correctly along with the top 10 maximal exited neurons (TODO quatoe image). It seems that because the \(\gamma_j(^nx)\) only care about overlap between the generative field and the input there can be miss classifications when the input overlaps more with a different digit. 
+
+TODO: figure here
+
+We can also note that the probabilities for all subsequent neurons are usually quite low with the maximal \(\gamma_j(^nx)\) often approximating 1. This might be a numerical issue that needs further investigation. Ideally we would like our network to faithfully represent uncertainty in the input, spreading more evenly the probability mass along the output neurons. 
+
+\subsection{Effect of the Mixing Weights on Classification Performance}
+The performance is very similar, perhaps slightly lower but would need further instigation \footnote{There is more variation in the performance between different runs of the simulations that variation between the uniform weights and log normal weights.}. Likewise there is the evolution of the weights and the resulting generative fields are very similar to the ones with the simulations where the mixing weights were uniform (images not shown).
+
+\subsection{Future Perspectives}
+In relation to the simulations and the theoretical framework presented before we present a list of further improvements to this work.
+
+\begin{itemize}
+\item
+	The weights need not be kept constant, they could be updated just as the $\lambda_{ji}$'s. We hypothesize that specially when there is a large class imbalance, updating the mixing weights would have a strong impact on performance.  
+\item 
+	We can view the mixing weights as representing the prior on the class size, perhaps the algorithm learns to compensate for class imbalance by grouping together output neurons that share the similar generative fields. However weather this is actually happening in our simulations is jet to be investigated. 
+\item
+	As mentioned before the uncertainty in the prediction is not very well represented. Achieving an accurate representation would be a great way to improve performance. 
+\itme
+	It would be interesting to explore whether one could perform more complex downstream tasks other than classification using this framework. One example of such task would the the addition of two numbers, where the input layer contains digits that come from two distinct underlying distributions and the output layer somehow represents the result of the sum. 
+\item
+	It would also be interesting to explore the implications of assuming a mixture model for the data to begin with with.
+\item
+	Finally the independence assumption for the derivation of the E-step in the Poisson EM can also have a large impact on performance but also on model complexity. 
+\end{itemize}
+
+\pagebreak
 \printbibliography
 \end{document}
